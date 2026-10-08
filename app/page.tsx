@@ -18,7 +18,6 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ query?: string }
         <h2 className="text-3xl font-serif font-bold text-[#212a3b]">Recent Books</h2>
         {/* <Search /> */}
       </div>
-      <BookCard title={"test"} author={"test"} coverURL={"test"} slug={"test"} />
       <div className="library-books-grid">
         {books.map((book) => (
           <BookCard key={book._id} title={book.title} author={book.author} coverURL={book.coverURL} slug={book.slug} />

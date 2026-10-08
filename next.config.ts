@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'covers.openlibrary.org' },
-      { protocol: 'https', hostname: 'lspfdyhgsrgsxcju.public.blob.vercel-storage.com' },
+      { protocol: 'https', hostname: 'hSjvx8djime6ddeM.public.blob.vercel-storage.com' },
     ]
   }
 };
