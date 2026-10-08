@@ -1,4 +1,3 @@
-@import '@clerk/ui/themes/shadcn.css';
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
@@ -50,8 +49,6 @@
 
 :root {
   --radius: 0.625rem;
-  --font-mona-sans: Arial, Helvetica, sans-serif;
-  --font-ibm-plex-serif: Georgia, 'Times New Roman', serif;
 
   /* Warm Literary Backgrounds */
   --bg-primary: #f8f4e9;
@@ -189,7 +186,11 @@
   }
 
   .input-reset {
-    @apply h-12 border-none lg:!text-lg shadow-none focus:outline-none focus-visible:ring-0;
+    @apply h-12 border-none shadow-none focus:outline-none focus-visible:ring-0;
+
+    @variant lg {
+      @apply !text-lg;
+    }
   }
 
   .label {
