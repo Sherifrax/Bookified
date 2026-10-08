@@ -6,6 +6,7 @@ import { escapeRegex, generateSlug, serializeData } from "@/lib/utils";
 import Book from "@/database/models/book.model";
 import BookSegment from "@/database/models/book-segment.model";
 import mongoose from "mongoose";
+import { auth } from "@clerk/nextjs/server";
 import { getUserPlan } from "@/lib/subscription.server";
 
 export const getAllBooks = async (search?: string) => {
@@ -148,12 +149,24 @@ export const getBookBySlug = async (slug: string) => {
 
 export const saveBookSegments = async (bookId: string, clerkId: string, segments: TextSegment[]) => {
     try {
+        const { userId } = await auth();
+
+        if (!userId || userId !== clerkId) {
+            return { success: false, error: "Unauthorized" };
+        }
+
         await connectToDatabase();
+
+        const book = await Book.findById(bookId).lean();
+
+        if (!book || book.clerkId !== userId) {
+            return { success: false, error: "Unauthorized" };
+        }
 
         console.log('Saving book segments...');
 
         const segmentsToInsert = segments.map(({ text, segmentIndex, pageNumber, wordCount }) => ({
-            clerkId, bookId, content: text, segmentIndex, pageNumber, wordCount
+            clerkId: userId, bookId, content: text, segmentIndex, pageNumber, wordCount
         }));
 
         await BookSegment.insertMany(segmentsToInsert);
@@ -204,6 +217,10 @@ export const searchBookSegments = async (bookId: string, query: string, limit: n
         // Fallback: regex search matching ANY keyword
         if (segments.length === 0) {
             const keywords = query.split(/\s+/).filter((k) => k.length > 2);
+            if (keywords.length === 0) {
+                return { success: true, data: [] };
+            }
+
             const pattern = keywords.map(escapeRegex).join('|');
 
             segments = await BookSegment.find({
