@@ -898,6 +898,12 @@
   min-height: 420px !important;
   display: flex !important;
   flex-direction: column !important;
+  background-color: #ffffff !important;
+}
+
+/* Keep the main Clerk pricing sections on one clean card surface. */
+.clerk-pricing-container .cl-pricingTableCard > *:not(button):not([class*='badge']):not([class*='Badge']) {
+  background-color: transparent !important;
 }
 
 .cl-pricingTableCardContent {
